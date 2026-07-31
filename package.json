@@ -1,6 +1,6 @@
 {
   "name": "@nilskluewer/pi-copy-to-clipboard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Pi extension that copies exact text, commands, and code to the system clipboard without executing it.",
   "type": "module",
   "keywords": [

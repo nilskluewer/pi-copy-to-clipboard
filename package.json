@@ -1,6 +1,6 @@
 {
   "name": "@nilskluewer/pi-copy-to-clipboard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Pi extension that copies exact text, commands, and code to the system clipboard without executing it.",
   "type": "module",
   "keywords": [
@@ -35,6 +35,10 @@
     "extensions": [
       "./extensions/copy-to-clipboard.ts"
     ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
   },
   "scripts": {
     "pack:dry": "npm pack --dry-run"

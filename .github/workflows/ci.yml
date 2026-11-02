@@ -13,16 +13,32 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Install Linux clipboard utilities
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb xclip xsel wl-clipboard
       - name: Install Pi
         run: npm install -g @earendil-works/pi-coding-agent@latest
       - name: Install dependencies
-        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
-      - run: npm test --if-present
+        run: npm ci --omit=peer
+      - name: Unit tests
+        run: npm test
+      - name: Real clipboard tests (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:clipboard
+      - name: Real clipboard tests (macOS / Windows)
+        if: runner.os != 'Linux'
+        run: npm run test:clipboard
       - name: Smoke test (load the packed tarball in Pi)
         run: npm run smoke
